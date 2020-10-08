@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import classes from './index.module.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+
 
 ReactDOM.render(
   <App />,
@@ -10,4 +10,4 @@ ReactDOM.render(
 );
 
 
-serviceWorker.unregister();
+

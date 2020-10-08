@@ -1,58 +1,74 @@
-import React, {Component} from 'react';
-import './App.css';
+import React from 'react'
+import classes from './index.module.css'
 
 
-class App extends Component {
-
-state = {
-  tasks: [
-    {}
-  ],
-  title: 'Задачи'
-}
-
-addTask = () => {
-const taskText = document.getElementById('taskInput').value;
-const newTask = {text: taskText};
-this.state.tasks.push(newTask);
-// for (let i = 1; i < this.state.tasks.length; i ++) {
-// let taskList = (this.state.tasks[i]);
-// console.log(taskList)
-// }
-console.log(this.state.tasks);
-document.getElementById('taskInput').value = "";
-}
-
-returnList = () => {
-  const taskList = this.state.tasks;
-const taskListItems = taskList.map((taskList) => {
-
-return <li>{taskList}</li>
-})
-return taskListItems;
-}
 
 
-render () {
 
-  return (
-    <div className="container">
-      <div className="taskField">
-        <h1>{this.state.title}</h1>
-        <ol className="tasksList">
-          {this.taskListItems}
-        </ol>
-        <label className="label">
-          <input type="text" id="taskInput"></input>
-          <button id="addButton" onClick={this.addTask}>"Добавить задачу"</button>
-        </label>
+class App extends React.Component {
+   constructor(props) {
+     super(props);
+
+    this.state = {
+      newTask: '',
+      taskList: []
+    }
+   }
+   nextNewTask(){
+    const getTask = document.getElementById('inp').value;
+    console.log(getTask)
+    this.setState({
+      newTask: getTask
+    });
+  }
+
+   addNewTask(){
+     if (this.state.newTask != '') {
+     this.state.taskList.push(this.state.newTask);
+     document.getElementById('inp').value = '';
+     this.setState({
+      newTask: ""
+    });
+  } return
+     console.log(this.state.taskList)
+   }
+
+
+
+  render() {
+    return (
+      <div className={classes.App}>
+        <h1>{this.state.taskList.length} Task today </h1>
+        <div className={classes.contentWrapper}>
+          <div className={classes.tasks}>
+            <ol>
+    {this.state.taskList.map((task) => <li className={classes.item}>{task}</li>)}
+            </ol>
+            </div>
+            <div className={classes.formContainer}>
+              <input 
+              id={'inp'}
+              className={classes.input} 
+              onChange={() => this.nextNewTask()} 
+              type='text' 
+              >
+              </input>
+              <button
+               className={classes.button}
+               onClick={() => this.addNewTask()}
+               >Add task</button>
+            </div>
+        </div>
+
       </div>
-      </div>
-  );
+    )
+  }
 }
-};
 
 
 
 
-export default App;
+
+
+export default App
+
