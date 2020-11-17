@@ -5,46 +5,23 @@ import Buttons from './buttons/buttons'
 import {connect} from 'react-redux'
 import './index.css'
 
-
 class App extends Component {
 
-  //  state = {
-  //     newTask: '',
-  //     taskList: [
-  //       'Test Task String'
-  //     ],
-  //   }
 
-taskInInput = (input) => {
-  console.log(this.props.newTask, this.props.taskList, input.value)
-    this.setState({
-        newTask: input
-    })
-  }
-
-addNewTask = (input) => {
-     if (this.props.newTask !== '') {
-       console.log(this.props.taskList)
-          const list = this.props.taskList
-          list.push(input)
-           this.setState({
-             newTask: '',
-             taskList: list
-           })
-  } return
+addNewTask = () => {
+     this.props.onClickInput();
    }
-
-  taskCheckHandler(event){
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : null;
-    const name = target.name;
-    console.log('Checked', name, value)
-  }
-
-  doneHandler = (e) => {
-    console.log(e.target.done)
-
-  }
+// addNewTask = (input) => {
+//      if (this.props.newTask !== '') {
+//        console.log(this.props.taskList)
+//           const list = this.props.taskList
+//           list.push(input)
+//            this.setState({
+//              newTask: '',
+//              taskList: list
+//            })
+//   } return
+//    }
 
 render() {
     return (
@@ -53,16 +30,11 @@ render() {
         <div className="contentWrapper">
 
           <Tasks
-          name={this.props.name}
-          taskList={this.props.taskList}
           doneHandler={this.doneHandler}
           />
 
           <AddTask
-          taskInInput={this.taskInInput}
-          newTask={this.props.newTask}
           addNewTask={this.addNewTask}
-          taskList={this.props.taskList}
           />
 
            <Buttons/>
@@ -74,7 +46,6 @@ render() {
 
 function mapStateToProps(state) {
    return {
-     newTask: state.newTask,
      taskList: state.taskList
    }
 }
@@ -82,7 +53,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
    onChangeInput: () => dispatch({type: 'ON_CHANGE_INPUT' }),
-   onClickInput: () => dispatch({type: 'ON_CLICK_INPUT'})
+   onClickInput: () => dispatch({type: 'ON_CLICK_INPUT', payload: "test is ok"})
 }
 }
 

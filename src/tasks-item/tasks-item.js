@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import './tasks-item.css'
 
-export default class TasksItem extends Component{
+class TasksItem extends Component{
 
 
    doneHandler = (event) => {
@@ -13,6 +14,7 @@ export default class TasksItem extends Component{
    render() {
       return(
          <div>
+
             { this.props.taskList.map((task) =>
             <li
              className="item"
@@ -23,7 +25,6 @@ export default class TasksItem extends Component{
               name="checkbox"
               type='checkbox'
               className="checkBox"
-            //   onChange={this.taskCheckHandler}
               />
             </li>) }
          </div>
@@ -31,4 +32,10 @@ export default class TasksItem extends Component{
    }
 }
 
+function mapStateToProps(state) {
+   return {
+     taskList: state.taskList
+   }
+}
 
+export default connect(mapStateToProps)(TasksItem)

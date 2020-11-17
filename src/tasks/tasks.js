@@ -12,10 +12,7 @@ export default class Task extends Component {
       return(
          <div className="tasks">
             <ol>
-             <TasksItem
-              name={this.props.name}
-              taskList={this.props.taskList}
-             />
+             <TasksItem/>
             </ol>
             </div>
       )

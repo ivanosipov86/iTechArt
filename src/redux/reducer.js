@@ -1,7 +1,7 @@
 const initialState = {
-   newTask: '1',
    taskList: [
-     'Test Task String'
+     'Test Task String',
+     'qeweewewe'
    ],
 }
 
@@ -16,10 +16,14 @@ export default function reducer(state = initialState, action) {
          }
 
       case 'ON_CLICK_INPUT':
-         return {
-
+         const list = state.taskList
+         list.push(action.payload)
+  
+         return{
+            ...state, taskList: list
          }
-      default :
+
+     default:
+        return state
    }
-     return state
 }
