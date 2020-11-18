@@ -7,36 +7,21 @@ import './index.css'
 
 class App extends Component {
 
-
-addNewTask = () => {
-     this.props.onClickInput();
+addNewTask = (input) => {
+     if (input) {
+       this.props.onClickInput(input)
+  } return
    }
-// addNewTask = (input) => {
-//      if (this.props.newTask !== '') {
-//        console.log(this.props.taskList)
-//           const list = this.props.taskList
-//           list.push(input)
-//            this.setState({
-//              newTask: '',
-//              taskList: list
-//            })
-//   } return
-//    }
 
 render() {
     return (
       <div className="App">
         <h1>{ this.props.taskList.length } Task today </h1>
         <div className="contentWrapper">
-
           <Tasks
-          doneHandler={this.doneHandler}
-          />
-
+          doneHandler={this.doneHandler}/>
           <AddTask
-          addNewTask={this.addNewTask}
-          />
-
+          addNewTask={this.addNewTask}/>
            <Buttons/>
         </div>
       </div>
@@ -46,14 +31,13 @@ render() {
 
 function mapStateToProps(state) {
    return {
-     taskList: state.taskList
+     taskList: [...state.taskList]
    }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-   onChangeInput: () => dispatch({type: 'ON_CHANGE_INPUT' }),
-   onClickInput: () => dispatch({type: 'ON_CLICK_INPUT', payload: "test is ok"})
+   onClickInput: (value) => dispatch({type: 'ON_CLICK_INPUT', payload: value})
 }
 }
 

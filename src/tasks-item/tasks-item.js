@@ -4,37 +4,31 @@ import './tasks-item.css'
 
 class TasksItem extends Component{
 
+doneHandler = (event) => {
+   let item = event.target
+   item.classList.toggle("done")
+   }
 
-   doneHandler = (event) => {
-      let item = event.target
-      item.classList.toggle("done")
-      console.log(item)
-      }
-
-   render() {
-      return(
-         <div>
-
-            { this.props.taskList.map((task) =>
-            <li
-             className="item"
-             onClick={this.doneHandler}
-             key={task.toString() + Math.random()} >
-              { task }
-            <input
-              name="checkbox"
-              type='checkbox'
-              className="checkBox"
-              />
-            </li>) }
-         </div>
-      )
+render() {
+   const task = this.props.task
+   return(
+      <li
+      className="item"
+      onClick={this.doneHandler}
+       >
+      {task}
+      <input
+      name="checkbox"
+      type='checkbox'
+      className="checkBox"
+      />
+      </li>)
    }
 }
 
 function mapStateToProps(state) {
    return {
-     taskList: state.taskList
+     taskList: [...state.taskList]
    }
 }
 

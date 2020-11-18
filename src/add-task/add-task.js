@@ -1,34 +1,38 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+ 
 
 
- class AddTask extends Component {
+ export default class AddTask extends Component {
 
-   state = {
-      value: ''
-   }
+state = {
+ value: ''
+}
 
-   taskInInput = (input) => {
-      this.setState({
-          value: input
-      })
-      console.log(this.state.value)
-    }
+taskInInput = (input) => {
+   this.setState({
+       value: input
+   })
+}
 
-   render() {
-      return(
-         <div className="formContainer">
-         <input
-           placeholder="NewInput"
-           name="taskText"
-           value={this.state.value}
-           className="input"
-           onChange={ input => this.taskInInput(input.target.value) }
-           type='text'>
-         </input>
-         <button
-           className="button"
-          onClick={ () => {this.props.addNewTask(this.state.value)} }
+render() {
+   return(
+      <div className="formContainer">
+      <input
+         placeholder="NewInput"
+         name="taskText"
+         value={this.state.value}
+         className="input"
+          onChange={ input => this.taskInInput(input.target.value) }
+         type='text'>
+      </input>
+      <button
+         className="button"
+         onClick={ () => 
+          {this.props.addNewTask(this.state.value)
+             this.setState({
+               value: ''
+             })}
+         }
           >Add task
          </button>
        </div>
@@ -36,4 +40,3 @@ import { connect } from 'react-redux';
    }
 }
 
-export default connect()(AddTask)

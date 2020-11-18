@@ -1,23 +1,32 @@
 import React, {Component} from 'react'
 import TasksItem from '../tasks-item/tasks-item'
+import {connect} from 'react-redux'
 import './tasks.css'
 
 
-export default class Task extends Component {
+class Tasks extends Component {
 
-
-
-
-   render() {
-      return(
-         <div className="tasks">
-            <ol>
-             <TasksItem/>
-            </ol>
-            </div>
-      )
+render() {
+   return(
+      <div className="tasks">
+         <ol>
+          {this.props.taskList.map(item => {
+           return <TasksItem
+                  task={item}
+                  key={item.toString() + Math.random()}/>
+             })}
+         </ol>
+      </div>
+    )
    }
 }
 
+function mapStateToProps(state) {
+   return {
+      taskList: [...state.taskList]
+   }
+}
+
+export default connect(mapStateToProps)(Tasks)
 
 
