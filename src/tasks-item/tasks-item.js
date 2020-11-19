@@ -1,35 +1,35 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
+
 import './tasks-item.css'
 
-class TasksItem extends Component{
+function TasksItem (props){
 
-doneHandler = (event) => {
+function doneHandler(event) {
    let item = event.target
    item.classList.toggle("done")
    }
 
-render() {
-   const task = this.props.task
-   return(
-      <li
-      className="item"
-      onClick={this.doneHandler}
-       >
-      {task}
-      <input
-      name="checkbox"
-      type='checkbox'
-      className="checkBox"
-      />
-      </li>)
-   }
+
+   const task = props.task
+      return(
+         <li
+            className="item"
+            onClick={doneHandler}>
+            {task.task}
+
+         <input
+            type='checkbox'
+            className="checkBox"
+            onClick={() => props.onClickInput(task.id)}
+            />
+         </li>)
 }
 
-function mapStateToProps(state) {
+function mapDispatchToProps(dispatch) {
    return {
-     taskList: [...state.taskList]
+     onClickInput: (value) => dispatch({type: 'ON_CHANGE_CHECKBOX', payload: value})
    }
-}
+ }
 
-export default connect(mapStateToProps)(TasksItem)
+export default connect(null, mapDispatchToProps)(TasksItem)

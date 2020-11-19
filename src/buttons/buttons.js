@@ -1,14 +1,28 @@
-import React, {Component} from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
 import './buttons.css'
 
-export default class Buttons extends Component {
+function Buttons(props) {
 
-   render() {
       return(
          <div className="buttonsContainer">
-         <button className="delButton">Delete checked task</button>
-         <button className="clearButton" >Clear input</button>
+         <button
+            className="delButton"
+            onClick={() => props.deleteTask()}>
+               Delete checked task</button>
+         <button
+            className="clearButton">
+               Clear input</button>
      </div>
       )
    }
+
+function mapDispatchToProps(dispatch){
+   return {
+      deleteTask: () => dispatch({type: 'DELETE_TASK'}),
+      clearInput: () => dispatch({type: 'CLEAR_INPUT'})
+
+   }
 }
+
+export default connect(null, mapDispatchToProps)(Buttons)

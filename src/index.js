@@ -16,7 +16,7 @@ const todoApp = (
 
 ReactDOM.render(
   todoApp,
-  document.getElementById('root')
+    document.getElementById('root')
 );
 
 

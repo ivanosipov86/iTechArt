@@ -1,24 +1,23 @@
-import React, {Component} from 'react'
+import React from 'react'
 import TasksItem from '../tasks-item/tasks-item'
 import {connect} from 'react-redux'
 import './tasks.css'
 
 
-class Tasks extends Component {
+function Tasks (props) {
 
-render() {
    return(
       <div className="tasks">
          <ol>
-          {this.props.taskList.map(item => {
-           return <TasksItem
+            {props.taskList.map(item => {
+               return <TasksItem
                   task={item}
                   key={item.toString() + Math.random()}/>
              })}
          </ol>
       </div>
     )
-   }
+
 }
 
 function mapStateToProps(state) {
@@ -28,5 +27,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Tasks)
-
 
