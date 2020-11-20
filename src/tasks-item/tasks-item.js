@@ -1,34 +1,33 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
 import './tasks-item.css'
 
 function TasksItem (props){
 
-function doneHandler(event) {
-   let item = event.target
-   item.classList.toggle("done")
-   }
+const task = props.task
 
+const done = (props.task.done ? ' done' : '')
+   return(
+      <li
+         className={"item" + done}
+         onClick={() => props.doneHandler(task.id)}
+         >
+         {task.task}
 
-   const task = props.task
-      return(
-         <li
-            className="item"
-            onClick={doneHandler}>
-            {task.task}
-
-         <input
-            type='checkbox'
-            className="checkBox"
-            onClick={() => props.onClickInput(task.id)}
-            />
-         </li>)
+      <input
+         defaultChecked={task.checked}
+         type='checkbox'
+         className="checkBox"
+         onClick={() => props.onChecked(task.id)}
+         />
+      </li>)
 }
+
 
 function mapDispatchToProps(dispatch) {
    return {
-     onClickInput: (value) => dispatch({type: 'ON_CHANGE_CHECKBOX', payload: value})
+     onChecked: (value) => dispatch({type: 'ON_CHECKED_CHECKBOX', payload: value}),
+     doneHandler: (value) => dispatch({type: 'DONE_HANDLER', payload: value})
    }
  }
 

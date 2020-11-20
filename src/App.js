@@ -7,12 +7,12 @@ import './index.css'
 
 function App(props) {
 
-
 function addNewTask(input, id){
      if (input) {
        const newTask = {
          task: input,
          checked: false,
+         done: false,
          id: id++
        }
        props.onClickInput(newTask)

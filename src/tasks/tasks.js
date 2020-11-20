@@ -17,7 +17,6 @@ function Tasks (props) {
          </ol>
       </div>
     )
-
 }
 
 function mapStateToProps(state) {

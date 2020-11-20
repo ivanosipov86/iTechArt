@@ -1,42 +1,29 @@
-import React, { Component } from 'react';
- export default class AddTask extends Component {
+import React, { useState } from 'react';
 
-taskId = 1;
+export default function AddTask (props) {
 
-state = {
- value: ''
-}
+const [value, setValue] = useState('')
+const [id, setId] = useState(1)
 
-taskInInput = (input) => {
-   this.setState({
-       value: input
-   })
-}
-
-render() {
-   return(
-      <div className="formContainer">
-         <input
-            placeholder="NewInput"
-            name="taskText"
-            value={this.state.value}
-            className="input"
-            onChange={ input => this.taskInInput(input.target.value) }
-            type='text'>
-         </input>
-      <button
+return(
+   <div className="formContainer">
+      <input
+         placeholder="NewInput"
+         name="taskText"
+         value={value}
+         className="input"
+         onChange={ input => setValue(input.target.value) }
+         type='text'>
+      </input>
+   <button
          className="button"
          onClick={ () =>
-          {this.props.addNewTask(this.state.value, this.taskId )
-             this.taskId++
-             this.setState({
-               value: ''
-             })}
+          {props.addNewTask(value, id)
+             setId(id + 1)
+             setValue('')}
          }
           >Add task
          </button>
-       </div>
+   </div>
       )
    }
-}
-

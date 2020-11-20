@@ -1,12 +1,4 @@
-const initialState = {
-   taskList: [{
-      task: "Test String 1",
-      checked: false,
-      id: 0
-    }
-
-   ]
-}
+const initialState = ((localStorage['toDoStore']) ? JSON.parse(localStorage['toDoStore']) : {taskList:[]})
 
 export default function reducer(state = initialState, action) {
 
@@ -18,8 +10,8 @@ switch(action.type) {
       return{
          ...state, taskList: newTask
       }
- case 'ON_CHANGE_CHECKBOX':
-      const index = state.taskList.findIndex((e) => e.id === action.payload)
+ case 'ON_CHECKED_CHECKBOX':
+      const index = state.taskList.findIndex(e => e.id === action.payload)
       const task = state.taskList[index]
       const checkedTask = {...task, checked: !task.checked}
       const newTaskList = [
@@ -30,6 +22,19 @@ switch(action.type) {
       return{
          taskList: newTaskList
       }
+ case 'DONE_HANDLER':
+      const number = state.taskList.findIndex(e => e.id === action.payload)
+      const i = state.taskList[number]
+      const doneTask = {...i, done: !i.done}
+      const newTasks = [
+         ...state.taskList.slice(0, number),
+         doneTask,
+         ...state.taskList.slice(number + 1)
+      ]
+       return{
+          taskList: newTasks
+      }
+
  case 'DELETE_TASK':
       const tasks = [...state.taskList]
       const deleteTaskList = tasks.filter(item => item.checked === false)
