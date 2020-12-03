@@ -1,21 +1,25 @@
-import React from 'react'
-import TasksItem from '../tasks-item/tasks-item'
-import {connect} from 'react-redux'
+import React from 'react';
+import TasksItem from '../tasks-item/tasks-item';
+import {connect} from 'react-redux';
+import styled, { keyframes } from 'styled-components';
+import { fadeInUp } from 'react-animations';
 import './tasks.css'
 
+const FadeInUp = styled.div`animation: 0.8s ${keyframes`${fadeInUp}`}`;
 
 function Tasks (props) {
-
    return(
       <div className="tasks">
          <ol>
             {props.taskList.map(item => {
-               return <TasksItem
-                  task={item}
-                  key={item.toString() + Math.random()}/>
-             })}
-         </ol>
-      </div>
+               return <FadeInUp
+                        key={item.id}>
+                           <TasksItem
+                              task={item}/>
+                      </FadeInUp>
+          })}
+      </ol>
+   </div>
     )
 }
 
@@ -25,5 +29,5 @@ function mapStateToProps(state) {
    }
 }
 
-export default connect(mapStateToProps)(Tasks)
+export default connect(mapStateToProps)(Tasks);
 
