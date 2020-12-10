@@ -1,12 +1,18 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import styled, { keyframes } from 'styled-components';
+import { slideInDown } from 'react-animations';
+
+const SlideInDown = styled.div`animation: 0.5s ${keyframes`${slideInDown}`}`;
 
 
 
 export default function StartPage(){
 
 return(
-      <div className={"form"}>
+<SlideInDown>
+<div className={"App"}>
+<div className={"form"}>
       <NavLink to="/user-auth">
          <button
             className={"submitButton signIn"}
@@ -22,6 +28,8 @@ return(
       </NavLink>
       <div><p className={"error"}>Create new account</p></div>
    </div>
+</div>
+</SlideInDown>
 )
 
 }

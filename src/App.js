@@ -7,74 +7,67 @@ import UserReg from './user-reg/user-reg'
 import UserAuth from './user-auth/userAuth'
 import StartPage from './start-page/startPage'
 import {connect} from 'react-redux';
-import {Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import { useEffect } from 'react';
 import './index.css';
-import { onClickInput, getInitialState } from './redux/actions/actions';
-import db from './config/fbConfig';
-
+import { getInitialState } from './redux/actions/actions';
+// import db from './config/fbConfig';
 import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
+import { startData } from './redux/actions/actions'
+
+
 
 const SlideInDown = styled.div`animation: 0.7s ${keyframes`${fadeIn}`}`;
-
 
 
 function App(props) {
 
 useEffect(() => {
-  db.ref('taskList').on('value', (snapshot) => {
-  const data = snapshot.val();
-    if(data) {
-      const dataValue = Object.values(data);
-      props.getInitialState(dataValue);
-      } else{
-          props.getInitialState([])
-      }
-    }
-  );
+  props.getInitialState();
+  // startData();
 }, []);
 
 
-function addNewTask(input){
-  if (input) {
-    const newTask = {
-      task: input,
-      checked: false,
-      done: false,
-      id: ''
-    }
-  props.onClickInput(newTask);
-} return
-}
+
+// useEffect(() => {
+//   // const uid = localStorage.getItem('uid');
+//   const uid = newUid();
+//   db.ref( uid + '/taskList').on('value', (snapshot) => {
+//   const data = snapshot.val();
+//   console.log('its app.js', uid)
+//     if(data) {
+//       const dataValue = Object.values(data);
+//       props.getInitialState(dataValue);
+//       } else{
+//           props.getInitialState([])
+//       }
+//     }
+//   );
+// }, []);
+
 
 
 return (
-<div
-    className="App">
-        
-        <Route path="/to-do-list" exact render={() => <SlideInDown><ToDoList/></SlideInDown>} />
+<div>
+  <Switch>
+    <Route path="/to-do-list" render={() => <SlideInDown><ToDoList/></SlideInDown>} />
+    <Route path="/user-reg"  render={() => <SlideInDown><UserReg/></SlideInDown>} />
+    <Route path="/user-auth"  render={() => <SlideInDown><UserAuth/></SlideInDown>} />
+    <Route path="/"  render={() => <SlideInDown><StartPage/></SlideInDown>} />
+    <Route render={() => <h1 style={{color: 'red', textAlign: 'center'}} >404 NOT FOUND</h1>}/>
+  </Switch>
 
-        <Route path="/user-reg" exact render={() => <SlideInDown><UserReg/></SlideInDown>} />
-
-        <Route path="/user-auth" exact render={() => <SlideInDown><UserAuth/></SlideInDown>} />
-
-        <Route path="/" exact render={() => <StartPage/>} />
       </div>
     );
 }
 
-function mapStateToProps(state) {
-  return {
-   taskList: [...state.taskList]
-  }
-}
+
 
 function mapDispatchToProps(dispatch) {
   return {
-    onClickInput: (value) => dispatch(onClickInput(value)),
-    getInitialState: (value) => dispatch(getInitialState(value))
+    getInitialState: () => dispatch(startData())
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

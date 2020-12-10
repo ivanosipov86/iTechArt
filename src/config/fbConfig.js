@@ -11,10 +11,6 @@ import firebase from 'firebase';
    appId: "1:973704257698:web:b30f75887e564e9865b7fb"
  });
 
- 
-
-
-
  const db = firebase.database();
 
  export default db;

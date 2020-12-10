@@ -5,6 +5,14 @@ import Buttons from '../buttons/buttons';
 import {connect} from 'react-redux';
 import { onClickInput } from '../redux/actions/actions';
 import { NavLink } from 'react-router-dom'
+import styled, { keyframes } from 'styled-components';
+import { slideInDown } from 'react-animations';
+
+
+const SlideInDown = styled.div`animation: 0.5s ${keyframes`${slideInDown}`}`;
+
+
+
 
 function ToDoList(props) {
 
@@ -21,7 +29,8 @@ function addNewTask(input){
 }
 
 return (
-   <div>
+  <SlideInDown>
+      <div className={"App"}>
        <h1>{ props.taskList.length === 0 ? "No" : props.taskList.length } task today </h1>
          <div className="contentWrapper">
            <Tasks />
@@ -29,7 +38,8 @@ return (
            <Buttons/>
          </div>
          <NavLink to="/"><button>Exit</button></NavLink>
-       </div>
+      </div>
+  </SlideInDown>
      );
 }
 

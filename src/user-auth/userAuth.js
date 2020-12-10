@@ -1,22 +1,29 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Formik } from 'formik'
-import * as yup from 'yup'
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import styled, { keyframes } from 'styled-components';
 import { slideInDown } from 'react-animations';
-import { NavLink } from 'react-router-dom'
+import {withRouter} from 'react-router-dom';
+import startData from '../start-data/start-data'
+
+const SlideInDown = styled.div`animation: 0.5s ${keyframes`${slideInDown}`}`;
 
 
-const SlideInDown = styled.div`animation: 0.3s ${keyframes`${slideInDown}`}`;
+function UserAuth({history}){
 
 
-function UserAuth(props){
+
 
 
 function signUser(email, password){
    firebase.auth().signInWithEmailAndPassword( email, password )
-      .then(response => console.log(response))
-   .catch(error => alert(error));
+      .then(response => {
+         localStorage.setItem('uid', response.user.uid);
+         
+         history.replace('/to-do-list');
+      })
+   .catch(error => console.log(error));
 }
 
 
@@ -32,7 +39,9 @@ const validationSchema = yup.object().shape({
 
 
 return(
-   <Formik
+  <SlideInDown>
+     <div className={"App"}>
+      <Formik
       initialValues={{
             email: '',
             password: ''
@@ -71,6 +80,8 @@ return(
             </div>
          )}
    </Formik>
+  </div>
+  </SlideInDown>
 )
 }
-export default UserAuth
+export default withRouter(UserAuth)

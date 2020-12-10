@@ -237,7 +237,7 @@ color: rgb(239, 241, 234);
 
   .submitButton:disabled{
     opacity: 0.5;
-    cursor: none;
+    cursor: not-allowed;
   }
 
   .errorMessage{
@@ -254,4 +254,3 @@ color: rgb(239, 241, 234);
     margin: 0 auto;
   }
 
-  

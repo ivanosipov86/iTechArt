@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import firebase from 'firebase';
-import { Formik } from 'formik'
-import * as yup from 'yup'
-import db from '../config/fbConfig'
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import db from '../config/fbConfig';
 import styled, { keyframes } from 'styled-components';
 import { slideInDown } from 'react-animations';
+import {withRouter} from 'react-router-dom';
 
 
 const SlideInDown = styled.div`animation: 0.5s ${keyframes`${slideInDown}`}`;
 
 
-function UserReg(props) {
-
-
+function UserReg({history}) {
 
 
 function createUser( email, password, login){
    firebase.auth().createUserWithEmailAndPassword( email, password)
-   .then(response =>  db.ref().child(response.user.uid).set({login: login}))
+      .then(response => {
+         db.ref().child(response.user.uid).set({login: login})
+         history.replace('/')
+      })
    .catch(error => console.log(error))
 }
 
@@ -50,7 +52,9 @@ const validationSchema = yup.object().shape({
 })
 
 return(
-      <Formik
+<SlideInDown>
+<div className={"App"}>
+<Formik
          initialValues={{
                login: '',
                password: '',
@@ -118,11 +122,14 @@ return(
                      disabled={!isValid || !dirty ? true : false}
                      onClick={handleSubmit}
                      type={"submit"}
-               >Send</button>
+                     >Submit</button>
             </div>
          )}
       </Formik>
+      </div>
+</SlideInDown>
 )
+
    }
 
-export default UserReg
+export default withRouter(UserReg)

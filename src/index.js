@@ -12,6 +12,7 @@ import {BrowserRouter} from 'react-router-dom'
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
+
 const todoApp = (
   <BrowserRouter>
     <Provider store={store}>
