@@ -1,66 +1,53 @@
 import { ON_CLICK_INPUT,
-         ON_CHECKED_CHECKBOX,
-         DONE_HANDLER,
+         ON_CHECKED,
+         ON_DONE,
          DELETE_TASK,
-         GET_INITIAL_STATE
+         GET_INITIAL_STATE,
+         SET_LOGGED
       } from "./actions/actionTypes";
-import db from '../config/fbConfig';
 
-function newUid () {
-   const uid = localStorage.getItem('uid');
-   return uid;
- }
-
-const initialState = ({taskList:[]});
-
+const initialState = ({taskList:[], logged: null});
 
 export default function reducer(state = initialState, action) {
 
-
-
 switch(action.type) {
 
-
- case ON_CLICK_INPUT:
-      const newTaskPush = db.ref(newUid() + '/taskList').push();
-      // const newTaskPush = db.ref('taskList').push();
-      const pushKey = newTaskPush.key;
-      action.payload.id = pushKey;
-      newTaskPush.set(action.payload);
+   case SET_LOGGED:
       return{
-         taskList: state.taskList
+         taskList: state.taskList,
+         logged: action.payload
       }
 
- case ON_CHECKED_CHECKBOX:
-      const index = state.taskList.findIndex(e => e.id === action.payload);
-      const checkTask = state.taskList[index];
-      db.ref(newUid() + '/taskList/' + checkTask.id).update({checked: !checkTask.checked});
+   case ON_CLICK_INPUT:
       return{
-         taskList: state.taskList
+         taskList: state.taskList,
+         logged: state.logged
       }
 
- case DONE_HANDLER:
-      const number = state.taskList.findIndex(e => e.id === action.payload);
-      const doneTask = state.taskList[number];
-      db.ref(newUid() + '/taskList/' + doneTask.id).update({done: !doneTask.done});
+   case ON_CHECKED:
+      return{
+         taskList: state.taskList,
+         logged: state.logged
+      }
+
+   case ON_DONE:
        return{
-          taskList: state.taskList
+          taskList: state.taskList,
+          logged: state.logged
       }
 
- case DELETE_TASK:
-      const items = state.taskList.filter(item => item.checked === true);
-      for(let i = 0; i < items.length; i++) {
-         db.ref(newUid() + '/taskList/' + items[i].id).remove();
-      }
+   case DELETE_TASK:
       return{
-         taskList: state.taskList
+         taskList: state.taskList,
+         logged: state.logged
       }
 
- case GET_INITIAL_STATE:
+   case GET_INITIAL_STATE:
       return{
-         taskList: action.payload
+         taskList: action.payload,
+         logged: state.logged
       }
- default:
+   default:
         return state
    }
 }

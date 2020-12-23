@@ -1,153 +1,80 @@
 import { ON_CLICK_INPUT,
-         ON_CHECKED_CHECKBOX,
-         DONE_HANDLER,
+         ON_CHECKED,
+         ON_DONE,
          DELETE_TASK,
-         GET_INITIAL_STATE } from "./actionTypes";
+         GET_INITIAL_STATE,
+         SET_LOGGED } from "./actionTypes";
 import db from '../../config/fbConfig';
 
-
-
-export function onClickInput(value) {
-   return {
-      type: ON_CLICK_INPUT,
-      payload: value
-   }
-}
-
-export function onCheckedCheckbox(value) {
-   return {
-      type: ON_CHECKED_CHECKBOX,
-      payload: value
-   }
-}
-
-export function doneHandler(value) {
-   return {
-      type: DONE_HANDLER,
-      payload: value
-   }
-}
-
-export function deleteTask() {
-   return {
-      type: DELETE_TASK
-   }
-}
-
-function newUid () {
+export default function newUid () {
    const uid = localStorage.getItem('uid');
    return uid;
- }
+}
 
-export function getInitialState(value){
+export function onChecked (id, check) {
+
    return dispatch => {
-      setTimeout(() => {
-         dispatch({type: GET_INITIAL_STATE, payload: value})
-         console.log('its me')
-      }, 3000)
+      db.ref(newUid() + '/taskList/' + id).update({checked: !check}, (error) => {
+         if (error) {
+            console.log("The write failed...")
+         } else {
+            console.log("The write DONE!!!!")
+            dispatch({type: ON_CHECKED})
+         }
+      })
    }
 }
 
-// function getInitialState(value) {
-//    return {
-//       type: GET_INITIAL_STATE,
-//       payload: value
-//    }
-// }
+export function onDone (id, done) {
+   return dispatch => {
+      db.ref(newUid() + '/taskList/' + id).update({done: !done}, (error) => {
+         if (error) {
+           console.log("The write failed...")
+         } else {
+            console.log("The write DONE!!!!")
+            dispatch({type: ON_DONE})
+         }
+      })
+   }
+}
 
+export function deleteTask(){
+   return dispatch => {
+      db.ref( newUid() + '/taskList').orderByChild('checked').equalTo(true).once('value',(snapshot) => {
+         const updates = {};
+         snapshot.forEach(child => updates[child.key] = null);
+         db.ref( newUid() + '/taskList').update(updates).then(() => dispatch({type: DELETE_TASK}))
+      })
+   }
+}
 
+export function onClickInput(value) {
+   return dispatch => {
+      const newTaskPush = db.ref(newUid() + '/taskList').push();
+      const pushKey = newTaskPush.key;
+      value.id = pushKey;
+      newTaskPush.set(value)
+      .then(dispatch ({
+         type: ON_CLICK_INPUT,
+         payload: value
+      }))
+   }
+}
 
-// function newUid () {
-//    const uid = localStorage.getItem('uid');
-//    return uid;
-//  }
-
-
+export function checkLogged() {
+   const loggedNow = localStorage.getItem('uid') ? true : false
+   return {
+      type: SET_LOGGED,
+      payload: loggedNow
+   }
+}
 
 export function startData(){
    return dispatch => {
-      const uid = newUid();
-      let data
-      db.ref( uid + '/taskList').on('value', (snapshot) => {
-         data = Object.values(snapshot.val())
-         dispatch({type: GET_INITIAL_STATE, payload: data})
-         console.log('test', data)
-         console.log('its start-data.js', uid);
-       }
-     );
-     if (data) {
-      dispatch({type: GET_INITIAL_STATE, payload: data})
-   } else {
-      console.log("test11111")
-      dispatch({type: GET_INITIAL_STATE, payload: []})
-   }
+      db.ref( newUid() + '/taskList').on('value', (snapshot) => {
+         const data = snapshot.val();
+         const dataValue = data ? Object.values(data) : [];
+         dispatch({type: GET_INITIAL_STATE, payload: dataValue })
+      })
    }
 }
-
-// export function startData(){
-//    const uid = newUid();
-
-//    db.ref( uid + '/taskList').on('value', (snapshot) => {
-//    const data = snapshot.val();
-   
-//    const newData = Object.values(data)
-//    console.log('test', data)
-//    data ? getInitialState(newData) : getInitialState([]);
-//    console.log('its start-data.js', uid);
-//     }
-//   );
-// }
-
-
-
-// export  function getInitialState(){
-
-//    const uid = localStorage.getItem('uid');
-//    setTimeout(() => {
-//       db.ref( uid + '/taskList').on('value', (snapshot) => {
-//          const data = snapshot.val();
-//          if(data) {
-//             const dataValue = Object.values(data);
-//             return dispatch => {
-         
-//                         dispatch({type: GET_INITIAL_STATE, payload: dataValue})
-//                      }
-//                   }
-//                   else {
-//             return dispatch => {
-              
-//                   dispatch({type: GET_INITIAL_STATE, payload: []})
-              
-//             }
-//          }
-//       }
-//       )
-//    }, 0)
-
-// }
-
-
-
-
-
-// export function startData(value){
-//    getInitialState(value)
-// }
-
-// export function startData(){
-//    const uid = newUid();
-//    db.ref( uid + '/taskList').on('value', (snapshot) => {
-//    const data = snapshot.val();
-//    console.log('its start-data.js', uid)
-//     if(data) {
-//       const dataValue = Object.values(data);
-//      getInitialState(dataValue);
-//       } else{
-//           getInitialState([])
-//       }
-//     }
-//   );
-// }
-
-
-

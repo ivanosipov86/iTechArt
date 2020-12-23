@@ -21,6 +21,7 @@
     "redux-thunk": "^2.3.0",
     "shortid": "^2.2.16",
     "styled-components": "^5.2.1",
+    "sweetalert2": "^10.12.5",
     "yap": "^0.0.2",
     "yup": "^0.31.0"
   },

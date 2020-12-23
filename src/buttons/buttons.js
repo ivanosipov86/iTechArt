@@ -5,29 +5,30 @@ import './buttons.css';
 
 function Buttons(props) {
 
-function clearInput(){
-   const a = document.getElementById('taskInput');
-   a.value = ''
-}
+   function clearInput(){
+      const val = document.getElementById('taskInput');
+      val.value = ''
+   }
 
-
-return(
-   <div className="buttonsContainer">
-      <button
-         className="delButton"
-         onClick={() => props.deleteTask()}>
-         Delete checked task</button>
+   return(
+      <div className="buttonsContainer">
+         <button
+            className="delButton"
+            onClick={() => props.delete()}>
+            Delete checked task
+         </button>
          <button
             className="clearButton"
             onClick={clearInput}>
-         Clear input</button>
-     </div>
+            Clear input
+         </button>
+      </div>
       )
    }
 
 function mapDispatchToProps(dispatch){
    return {
-      deleteTask: () => dispatch(deleteTask())
+      delete: () => dispatch(deleteTask())
    }
 }
 

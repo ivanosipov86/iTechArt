@@ -3,24 +3,30 @@ import TasksItem from '../tasks-item/tasks-item';
 import {connect} from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 import { fadeInUp } from 'react-animations';
+import { useEffect } from 'react';
+import {startData} from '../redux/actions/actions'
 import './tasks.css'
 
 const FadeInUp = styled.div`animation: 0.8s ${keyframes`${fadeInUp}`}`;
 
-function Tasks (props) {
+function Tasks ({getInitialState, taskList}) {
+
+   useEffect(() => {
+      getInitialState()
+    }, []);
+
    return(
       <div className="tasks">
          <ol>
-            {props.taskList.map(item => {
+            {taskList.map(item => {
                return <FadeInUp
                         key={item.id}>
-                           <TasksItem
-                              task={item}/>
+                           <TasksItem task={item}/>
                       </FadeInUp>
-          })}
-      </ol>
-   </div>
-    )
+            })}
+         </ol>
+      </div>
+   )
 }
 
 function mapStateToProps(state) {
@@ -29,5 +35,11 @@ function mapStateToProps(state) {
    }
 }
 
-export default connect(mapStateToProps)(Tasks);
+function mapDispatchToProps(dispatch) {
+   return{
+      getInitialState: () => dispatch(startData())
+   }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
 
